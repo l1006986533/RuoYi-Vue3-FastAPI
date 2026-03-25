@@ -9,6 +9,12 @@ from module_admin.service.config_service import ConfigService
 from module_admin.service.dict_service import DictDataService
 from utils.log_util import logger
 
+try:
+    import fakeredis
+    FAKEREDIS_AVAILABLE = True
+except ImportError:
+    FAKEREDIS_AVAILABLE = False
+
 
 class RedisUtil:
     """
@@ -24,6 +30,16 @@ class RedisUtil:
         :param log_start_enabled: 是否输出开始连接日志
         :return: Redis连接对象
         """
+        # 使用内存模拟Redis
+        if RedisConfig.redis_use_fake:
+            if not FAKEREDIS_AVAILABLE:
+                raise ImportError('fakeredis is not installed. Install it with: pip install fakeredis[aioredis]')
+            redis = fakeredis.aioredis.FakeRedis(
+                decode_responses=True,
+            )
+            return redis
+
+        # 连接真实Redis
         redis = await aioredis.from_url(
             url=f'redis://{RedisConfig.redis_host}',
             port=RedisConfig.redis_port,
@@ -81,8 +97,10 @@ class RedisUtil:
         :param app: fastapi对象
         :return:
         """
-        await app.state.redis.close()
-        logger.info('✅️ 关闭redis连接成功')
+        # fakeredis不需要关闭连接
+        if not RedisConfig.redis_use_fake:
+            await app.state.redis.close()
+            logger.info('✅️ 关闭redis连接成功')
 
     @classmethod
     async def init_sys_dict(cls, redis: FastAPI) -> None:

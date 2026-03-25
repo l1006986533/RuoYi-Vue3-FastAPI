@@ -14,8 +14,8 @@ class SysJob(Base):
     __table_args__ = {'comment': '定时任务调度表'}
 
     job_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='任务ID')
-    job_name = Column(String(64), primary_key=True, nullable=False, server_default="''", comment='任务名称')
-    job_group = Column(String(64), primary_key=True, nullable=False, server_default='default', comment='任务组名')
+    job_name = Column(String(64), nullable=False, server_default="''", comment='任务名称')
+    job_group = Column(String(64), nullable=False, server_default='default', comment='任务组名')
     job_executor = Column(String(64), nullable=True, server_default='default', comment='任务执行器')
     invoke_target = Column(String(500), nullable=False, comment='调用目标字符串')
     job_args = Column(String(255), nullable=True, server_default="''", comment='位置参数')

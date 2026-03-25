@@ -1,5 +1,6 @@
 agno==2.4.8
 aiofiles==25.1.0
+aiosqlite==3.2.1
 alembic==1.18.3
 anthropic==0.78.0
 APScheduler==3.11.2
@@ -8,6 +9,7 @@ asyncmy==0.2.11
 bcrypt==5.0.0
 cerebras-cloud-sdk==1.67.0
 cohere==5.20.4
+fakeredis[aioredis]==2.25.0
 fastapi[all]==0.128.2
 google-genai==1.62.0
 groq==1.0.0

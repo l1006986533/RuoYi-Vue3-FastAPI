@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from common.vo import CrudResponseModel, PageModel
 from config.database import AsyncSessionLocal
-from config.env import LogConfig
+from config.env import LogConfig, RedisConfig
 from exceptions.exception import ServiceException
 from middlewares.trace_middleware.ctx import TraceCtx
 from module_admin.dao.log_dao import LoginLogDao, OperationLogDao
@@ -447,13 +447,25 @@ class LogAggregatorService:
                 if now - last_claim_time >= LogConfig.log_stream_claim_interval_ms / 1000:
                     await cls._claim_pending(redis, consumer_name)
                     last_claim_time = now
-                result = await redis.xreadgroup(
-                    groupname=LogConfig.log_stream_group,
-                    consumername=consumer_name,
-                    streams={LogConfig.log_stream_key: '>'},
-                    count=LogConfig.log_stream_batch_size,
-                    block=LogConfig.log_stream_block_ms,
-                )
+
+                # fakeredis.aioredis.FakeRedis 不正确支持 block 参数，所以使用 sleep 代替
+                if RedisConfig.redis_use_fake:
+                    result = await redis.xreadgroup(
+                        groupname=LogConfig.log_stream_group,
+                        consumername=consumer_name,
+                        streams={LogConfig.log_stream_key: '>'},
+                        count=LogConfig.log_stream_batch_size,
+                    )
+                    await asyncio.sleep(LogConfig.log_stream_block_ms / 1000)
+                else:
+                    result = await redis.xreadgroup(
+                        groupname=LogConfig.log_stream_group,
+                        consumername=consumer_name,
+                        streams={LogConfig.log_stream_key: '>'},
+                        count=LogConfig.log_stream_batch_size,
+                        block=LogConfig.log_stream_block_ms,
+                    )
+
                 if not result:
                     continue
                 for stream_name, messages in result:

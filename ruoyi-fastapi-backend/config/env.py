@@ -35,7 +35,7 @@ class JwtSettings(BaseSettings):
     """
 
     jwt_secret_key: str = 'b01c66dc2c58dc6a0aabfe2144256be36226de378bf87f72c0c795dda67f4d55'
-    jwt_algorithm: str = 'HS256'
+    jwt_algorithm: str = 'HS512'
     jwt_expire_minutes: int = 1440
     jwt_redis_expire_minutes: int = 30
 
@@ -45,7 +45,7 @@ class DataBaseSettings(BaseSettings):
     数据库配置
     """
 
-    db_type: Literal['mysql', 'postgresql'] = 'mysql'
+    db_type: Literal['mysql', 'postgresql', 'sqlite'] = 'sqlite'
     db_host: str = '127.0.0.1'
     db_port: int = 3306
     db_username: str = 'root'
@@ -70,6 +70,7 @@ class RedisSettings(BaseSettings):
     Redis配置
     """
 
+    redis_use_fake: bool = True
     redis_host: str = '127.0.0.1'
     redis_port: int = 6379
     redis_username: str = ''

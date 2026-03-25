@@ -18,6 +18,8 @@ def build_async_sqlalchemy_database_url() -> str:
             f'postgresql+asyncpg://{DataBaseConfig.db_username}:{quote_plus(DataBaseConfig.db_password)}@'
             f'{DataBaseConfig.db_host}:{DataBaseConfig.db_port}/{DataBaseConfig.db_database}'
         )
+    elif DataBaseConfig.db_type == 'sqlite':
+        return f'sqlite+aiosqlite:///{DataBaseConfig.db_database}.db'
     return (
         f'mysql+asyncmy://{DataBaseConfig.db_username}:{quote_plus(DataBaseConfig.db_password)}@'
         f'{DataBaseConfig.db_host}:{DataBaseConfig.db_port}/{DataBaseConfig.db_database}'
@@ -38,6 +40,8 @@ def build_sync_sqlalchemy_database_url() -> str:
             f'postgresql+psycopg2://{DataBaseConfig.db_username}:{quote_plus(DataBaseConfig.db_password)}@'
             f'{DataBaseConfig.db_host}:{DataBaseConfig.db_port}/{DataBaseConfig.db_database}'
         )
+    elif DataBaseConfig.db_type == 'sqlite':
+        return f'sqlite:///{DataBaseConfig.db_database}.db'
     return (
         f'mysql+pymysql://{DataBaseConfig.db_username}:{quote_plus(DataBaseConfig.db_password)}@'
         f'{DataBaseConfig.db_host}:{DataBaseConfig.db_port}/{DataBaseConfig.db_database}'
@@ -54,14 +58,18 @@ def create_async_db_engine(echo: bool | None = None) -> AsyncEngine:
     :param echo: 可选，是否输出 SQLAlchemy SQL 日志
     :return: 异步 SQLAlchemy Engine
     """
-    return create_async_engine(
-        ASYNC_SQLALCHEMY_DATABASE_URL,
-        echo=DataBaseConfig.db_echo if echo is None else echo,
-        max_overflow=DataBaseConfig.db_max_overflow,
-        pool_size=DataBaseConfig.db_pool_size,
-        pool_recycle=DataBaseConfig.db_pool_recycle,
-        pool_timeout=DataBaseConfig.db_pool_timeout,
-    )
+    engine_kwargs = {
+        'echo': DataBaseConfig.db_echo if echo is None else echo,
+    }
+    # SQLite 不支持连接池相关参数
+    if DataBaseConfig.db_type != 'sqlite':
+        engine_kwargs.update({
+            'max_overflow': DataBaseConfig.db_max_overflow,
+            'pool_size': DataBaseConfig.db_pool_size,
+            'pool_recycle': DataBaseConfig.db_pool_recycle,
+            'pool_timeout': DataBaseConfig.db_pool_timeout,
+        })
+    return create_async_engine(ASYNC_SQLALCHEMY_DATABASE_URL, **engine_kwargs)
 
 
 def create_sync_db_engine(echo: bool | None = None) -> Engine:
@@ -71,14 +79,18 @@ def create_sync_db_engine(echo: bool | None = None) -> Engine:
     :param echo: 可选，是否输出 SQLAlchemy SQL 日志
     :return: 同步 SQLAlchemy Engine
     """
-    return create_engine(
-        SYNC_SQLALCHEMY_DATABASE_URL,
-        echo=DataBaseConfig.db_echo if echo is None else echo,
-        max_overflow=DataBaseConfig.db_max_overflow,
-        pool_size=DataBaseConfig.db_pool_size,
-        pool_recycle=DataBaseConfig.db_pool_recycle,
-        pool_timeout=DataBaseConfig.db_pool_timeout,
-    )
+    engine_kwargs = {
+        'echo': DataBaseConfig.db_echo if echo is None else echo,
+    }
+    # SQLite 不支持连接池相关参数
+    if DataBaseConfig.db_type != 'sqlite':
+        engine_kwargs.update({
+            'max_overflow': DataBaseConfig.db_max_overflow,
+            'pool_size': DataBaseConfig.db_pool_size,
+            'pool_recycle': DataBaseConfig.db_pool_recycle,
+            'pool_timeout': DataBaseConfig.db_pool_timeout,
+        })
+    return create_engine(SYNC_SQLALCHEMY_DATABASE_URL, **engine_kwargs)
 
 
 def create_async_session_local(engine: AsyncEngine) -> async_sessionmaker:
