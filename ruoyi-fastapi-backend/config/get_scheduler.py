@@ -180,10 +180,16 @@ class SchedulerUtil:
         """
         if cls._scheduler_configured:
             return
+        
+        if RedisConfig.redis_use_fake:
+            redis_job_store = MemoryJobStore()
+        else:
+            redis_job_store = RedisJobStore(**redis_config)
+        
         job_stores = {
             'default': MemoryJobStore(),
             'sqlalchemy': SQLAlchemyJobStore(url=SYNC_SQLALCHEMY_DATABASE_URL, engine=cls._get_jobstore_engine()),
-            'redis': RedisJobStore(**redis_config),
+            'redis': redis_job_store,
         }
         executors = {'default': AsyncIOExecutor(), 'processpool': ProcessPoolExecutor(5)}
         scheduler.configure(jobstores=job_stores, executors=executors, job_defaults=job_defaults)
