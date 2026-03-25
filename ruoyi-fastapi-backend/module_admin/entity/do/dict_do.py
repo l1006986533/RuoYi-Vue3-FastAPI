@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CHAR, BigInteger, Column, DateTime, Integer, String
+from sqlalchemy import CHAR, Column, DateTime, Integer, String
 
 from config.database import Base
 from config.env import DataBaseConfig
@@ -15,7 +15,7 @@ class SysDictType(Base):
     __tablename__ = 'sys_dict_type'
     __table_args__ = {'comment': '字典类型表'}
 
-    dict_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='字典主键')
+    dict_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='字典主键')
     dict_name = Column(String(100), nullable=True, server_default="''", comment='字典名称')
     dict_type = Column(String(100), unique=True, nullable=True, server_default="''", comment='字典类型')
     status = Column(CHAR(1), nullable=True, server_default='0', comment='状态（0正常 1停用）')
@@ -39,7 +39,7 @@ class SysDictData(Base):
     __tablename__ = 'sys_dict_data'
     __table_args__ = {'comment': '字典数据表'}
 
-    dict_code = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='字典编码')
+    dict_code = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='字典编码')
     dict_sort = Column(Integer, nullable=True, server_default='0', comment='字典排序')
     dict_label = Column(String(100), nullable=True, server_default="''", comment='字典标签')
     dict_value = Column(String(100), nullable=True, server_default="''", comment='字典键值')

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CHAR, BigInteger, Column, DateTime, Integer, String
+from sqlalchemy import CHAR, Column, DateTime, Integer, String
 
 from config.database import Base
 from config.env import DataBaseConfig
@@ -15,9 +15,9 @@ class SysMenu(Base):
     __tablename__ = 'sys_menu'
     __table_args__ = {'comment': '菜单权限表'}
 
-    menu_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='菜单ID')
+    menu_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='菜单ID')
     menu_name = Column(String(50), nullable=False, comment='菜单名称')
-    parent_id = Column(BigInteger, nullable=True, server_default='0', comment='父菜单ID')
+    parent_id = Column(Integer, nullable=True, server_default='0', comment='父菜单ID')
     order_num = Column(Integer, server_default='0', comment='显示顺序')
     path = Column(String(200), nullable=True, server_default="''", comment='路由地址')
     component = Column(

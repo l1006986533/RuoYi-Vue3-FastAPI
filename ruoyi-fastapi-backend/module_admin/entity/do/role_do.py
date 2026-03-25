@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CHAR, BigInteger, Column, DateTime, Integer, SmallInteger, String
+from sqlalchemy import CHAR, Column, DateTime, Integer, SmallInteger, String
 from sqlalchemy.dialects import mysql
 
 from config.database import Base
@@ -16,7 +16,7 @@ class SysRole(Base):
     __tablename__ = 'sys_role'
     __table_args__ = {'comment': '角色信息表'}
 
-    role_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='角色ID')
+    role_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='角色ID')
     role_name = Column(String(30), nullable=False, comment='角色名称')
     role_key = Column(String(100), nullable=False, comment='角色权限字符串')
     role_sort = Column(Integer, nullable=False, comment='显示顺序')
@@ -60,8 +60,8 @@ class SysRoleDept(Base):
     __tablename__ = 'sys_role_dept'
     __table_args__ = {'comment': '角色和部门关联表'}
 
-    role_id = Column(BigInteger, primary_key=True, nullable=False, comment='角色ID')
-    dept_id = Column(BigInteger, primary_key=True, nullable=False, comment='部门ID')
+    role_id = Column(Integer, primary_key=True, nullable=False, comment='角色ID')
+    dept_id = Column(Integer, primary_key=True, nullable=False, comment='部门ID')
 
 
 class SysRoleMenu(Base):
@@ -72,5 +72,5 @@ class SysRoleMenu(Base):
     __tablename__ = 'sys_role_menu'
     __table_args__ = {'comment': '角色和菜单关联表'}
 
-    role_id = Column(BigInteger, primary_key=True, nullable=False, comment='角色ID')
-    menu_id = Column(BigInteger, primary_key=True, nullable=False, comment='菜单ID')
+    role_id = Column(Integer, primary_key=True, nullable=False, comment='角色ID')
+    menu_id = Column(Integer, primary_key=True, nullable=False, comment='菜单ID')

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CHAR, BigInteger, Column, DateTime, String
+from sqlalchemy import CHAR, Column, DateTime, String, Integer
 
 from config.database import Base
 
@@ -13,7 +13,7 @@ class SysJob(Base):
     __tablename__ = 'sys_job'
     __table_args__ = {'comment': '定时任务调度表'}
 
-    job_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='任务ID')
+    job_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='任务ID')
     job_name = Column(String(64), nullable=False, server_default="''", comment='任务名称')
     job_group = Column(String(64), nullable=False, server_default='default', comment='任务组名')
     job_executor = Column(String(64), nullable=True, server_default='default', comment='任务执行器')
@@ -44,7 +44,7 @@ class SysJobLog(Base):
     __tablename__ = 'sys_job_log'
     __table_args__ = {'comment': '定时任务调度日志表'}
 
-    job_log_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='任务日志ID')
+    job_log_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='任务日志ID')
     job_name = Column(String(64), nullable=False, comment='任务名称')
     job_group = Column(String(64), nullable=False, comment='任务组名')
     job_executor = Column(String(64), nullable=False, comment='任务执行器')

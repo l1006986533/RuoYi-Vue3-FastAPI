@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CHAR, BigInteger, Column, DateTime, String
+from sqlalchemy import CHAR, Integer, Column, DateTime, String
 
 from config.database import Base
 from config.env import DataBaseConfig
@@ -15,9 +15,9 @@ class SysUser(Base):
     __tablename__ = 'sys_user'
     __table_args__ = {'comment': '用户信息表'}
 
-    user_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='用户ID')
+    user_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='用户ID')
     dept_id = Column(
-        BigInteger,
+        Integer,
         nullable=True,
         server_default=SqlalchemyUtil.get_server_default_null(DataBaseConfig.db_type, False),
         comment='部门ID',
@@ -55,8 +55,8 @@ class SysUserRole(Base):
     __tablename__ = 'sys_user_role'
     __table_args__ = {'comment': '用户和角色关联表'}
 
-    user_id = Column(BigInteger, primary_key=True, nullable=False, comment='用户ID')
-    role_id = Column(BigInteger, primary_key=True, nullable=False, comment='角色ID')
+    user_id = Column(Integer, primary_key=True, nullable=False, comment='用户ID')
+    role_id = Column(Integer, primary_key=True, nullable=False, comment='角色ID')
 
 
 class SysUserPost(Base):
@@ -67,5 +67,5 @@ class SysUserPost(Base):
     __tablename__ = 'sys_user_post'
     __table_args__ = {'comment': '用户与岗位关联表'}
 
-    user_id = Column(BigInteger, primary_key=True, nullable=False, comment='用户ID')
-    post_id = Column(BigInteger, primary_key=True, nullable=False, comment='岗位ID')
+    user_id = Column(Integer, primary_key=True, nullable=False, comment='用户ID')
+    post_id = Column(Integer, primary_key=True, nullable=False, comment='岗位ID')

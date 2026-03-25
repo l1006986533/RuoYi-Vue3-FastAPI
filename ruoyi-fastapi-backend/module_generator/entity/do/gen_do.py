@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CHAR, BigInteger, Column, DateTime, Integer, String
+from sqlalchemy import CHAR, Column, DateTime, Integer, String
 from sqlalchemy.orm import foreign, relationship
 
 from config.database import Base
@@ -16,7 +16,7 @@ class GenTable(Base):
     __tablename__ = 'gen_table'
     __table_args__ = {'comment': '代码生成业务表'}
 
-    table_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='编号')
+    table_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='编号')
     table_name = Column(String(200), nullable=True, server_default="''", comment='表名称')
     table_comment = Column(String(500), nullable=True, server_default="''", comment='表描述')
     sub_table_name = Column(
@@ -73,8 +73,8 @@ class GenTableColumn(Base):
     __tablename__ = 'gen_table_column'
     __table_args__ = {'comment': '代码生成业务表字段'}
 
-    column_id = Column(BigInteger, primary_key=True, autoincrement=True, nullable=False, comment='编号')
-    table_id = Column(BigInteger, nullable=True, comment='归属表编号')
+    column_id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, comment='编号')
+    table_id = Column(Integer, nullable=True, comment='归属表编号')
     column_name = Column(String(200), nullable=True, comment='列名称')
     column_comment = Column(String(500), nullable=True, comment='列描述')
     column_type = Column(String(100), nullable=True, comment='列类型')

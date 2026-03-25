@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CHAR, BigInteger, Column, DateTime, Float, Integer, String
+from sqlalchemy import CHAR, Column, DateTime, Float, Integer, String
 
 from config.database import Base
 from config.env import DataBaseConfig
@@ -15,7 +15,7 @@ class AiModels(Base):
     __tablename__ = 'ai_models'
     __table_args__ = {'comment': 'AI模型表'}
 
-    model_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='模型主键')
+    model_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='模型主键')
     model_code = Column(String(100), nullable=False, comment='模型编码')
     model_name = Column(
         String(100),
@@ -48,8 +48,8 @@ class AiModels(Base):
     support_reasoning = Column(CHAR(1), server_default='N', comment='是否支持推理')
     support_images = Column(CHAR(1), server_default='N', comment='是否支持图片')
     status = Column(CHAR(1), server_default='0', comment='模型状态')
-    user_id = Column(BigInteger, nullable=True, comment='用户ID')
-    dept_id = Column(BigInteger, nullable=True, comment='部门ID')
+    user_id = Column(Integer, nullable=True, comment='用户ID')
+    dept_id = Column(Integer, nullable=True, comment='部门ID')
     create_by = Column(String(64), nullable=True, server_default="''", comment='创建者')
     create_time = Column(DateTime, nullable=True, default=datetime.now(), comment='创建时间')
     update_by = Column(String(64), nullable=True, server_default="''", comment='更新者')

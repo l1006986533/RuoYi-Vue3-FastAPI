@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CHAR, BigInteger, Column, DateTime, Index, Integer, String
+from sqlalchemy import CHAR, Column, DateTime, Index, Integer, String
 
 from config.database import Base
 
@@ -13,7 +13,7 @@ class SysLogininfor(Base):
     __tablename__ = 'sys_logininfor'
     __table_args__ = {'comment': '系统访问记录'}
 
-    info_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='访问ID')
+    info_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='访问ID')
     user_name = Column(String(50), nullable=True, server_default="''", comment='用户账号')
     ipaddr = Column(String(128), nullable=True, server_default="''", comment='登录IP地址')
     login_location = Column(String(255), nullable=True, server_default="''", comment='登录地点')
@@ -35,7 +35,7 @@ class SysOperLog(Base):
     __tablename__ = 'sys_oper_log'
     __table_args__ = {'comment': '操作日志记录'}
 
-    oper_id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='日志主键')
+    oper_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True, comment='日志主键')
     title = Column(String(50), nullable=True, server_default="''", comment='模块标题')
     business_type = Column(Integer, nullable=True, server_default='0', comment='业务类型（0其它 1新增 2修改 3删除）')
     method = Column(String(100), nullable=True, server_default="''", comment='方法名称')
@@ -53,7 +53,7 @@ class SysOperLog(Base):
     status = Column(Integer, nullable=True, server_default='0', comment='操作状态（0正常 1异常）')
     error_msg = Column(String(2000), nullable=True, server_default="''", comment='错误消息')
     oper_time = Column(DateTime, nullable=True, default=datetime.now(), comment='操作时间')
-    cost_time = Column(BigInteger, nullable=True, server_default='0', comment='消耗时间')
+    cost_time = Column(Integer, nullable=True, server_default='0', comment='消耗时间')
 
     idx_sys_oper_log_bt = Index('idx_sys_oper_log_bt', business_type)
     idx_sys_oper_log_s = Index('idx_sys_oper_log_s', status)
