@@ -31,3 +31,48 @@ async def get_system_vehicle_list(
     logger.info('获取车辆列表成功')
     
     return ResponseUtil.success(rows=vehicle_list, dict_content={'total': total})
+
+
+@vehicle_controller.get(
+    '/statistics/brand',
+    summary='获取品牌分布统计接口',
+    description='用于获取车辆品牌分布统计（饼图数据）',
+    response_model=ResponseBaseModel,
+)
+async def get_vehicle_brand_statistics(
+    request: Request,
+    query_db: Annotated[AsyncSession, DBSessionDependency()],
+) -> Response:
+    stats = await VehicleService.get_brand_statistics_services(query_db)
+    logger.info('获取品牌分布统计成功')
+    return ResponseUtil.success(data=stats)
+
+
+@vehicle_controller.get(
+    '/statistics/model',
+    summary='获取车型分布统计接口',
+    description='用于获取车型分布统计（柱状图数据）',
+    response_model=ResponseBaseModel,
+)
+async def get_vehicle_model_statistics(
+    request: Request,
+    query_db: Annotated[AsyncSession, DBSessionDependency()],
+) -> Response:
+    stats = await VehicleService.get_model_statistics_services(query_db)
+    logger.info('获取车型分布统计成功')
+    return ResponseUtil.success(data=stats)
+
+
+@vehicle_controller.get(
+    '/statistics/config',
+    summary='获取配置分布统计接口',
+    description='用于获取车辆配置分布统计（饼图数据）',
+    response_model=ResponseBaseModel,
+)
+async def get_vehicle_config_statistics(
+    request: Request,
+    query_db: Annotated[AsyncSession, DBSessionDependency()],
+) -> Response:
+    stats = await VehicleService.get_config_statistics_services(query_db)
+    logger.info('获取配置分布统计成功')
+    return ResponseUtil.success(data=stats)

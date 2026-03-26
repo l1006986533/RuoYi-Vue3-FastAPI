@@ -25,3 +25,33 @@ class VehicleService:
         vehicle_list_result = CamelCaseUtil.transform_result(vehicle_list)
         
         return vehicle_list_result, total
+
+    @classmethod
+    async def get_brand_statistics_services(cls, query_db: AsyncSession):
+        """
+        获取品牌分布统计service
+
+        :param query_db: orm对象
+        :return: 品牌统计列表
+        """
+        return await VehicleDao.get_brand_statistics(query_db)
+
+    @classmethod
+    async def get_model_statistics_services(cls, query_db: AsyncSession):
+        """
+        获取车型分布统计service
+
+        :param query_db: orm对象
+        :return: 车型统计列表
+        """
+        return await VehicleDao.get_model_statistics(query_db)
+
+    @classmethod
+    async def get_config_statistics_services(cls, query_db: AsyncSession):
+        """
+        获取配置分布统计service
+
+        :param query_db: orm对象
+        :return: 配置统计列表
+        """
+        return await VehicleDao.get_config_statistics(query_db)

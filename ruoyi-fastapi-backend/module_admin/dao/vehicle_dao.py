@@ -47,3 +47,42 @@ class VehicleDao:
         vehicle_list = result.scalars().all()
         
         return list(vehicle_list), total
+
+    @classmethod
+    async def get_brand_statistics(cls, db: AsyncSession):
+        """
+        获取品牌分布统计
+
+        :param db: orm对象
+        :return: 品牌统计列表 [{name: str, value: int}]
+        """
+        stmt = select(SysVehicle.brand, func.count()).group_by(SysVehicle.brand)
+        result = await db.execute(stmt)
+        rows = result.all()
+        return [{"name": row[0], "value": row[1]} for row in rows]
+
+    @classmethod
+    async def get_model_statistics(cls, db: AsyncSession):
+        """
+        获取车型分布统计
+
+        :param db: orm对象
+        :return: 车型统计列表 [{name: str, value: int}]
+        """
+        stmt = select(SysVehicle.model, func.count()).group_by(SysVehicle.model)
+        result = await db.execute(stmt)
+        rows = result.all()
+        return [{"name": row[0], "value": row[1]} for row in rows]
+
+    @classmethod
+    async def get_config_statistics(cls, db: AsyncSession):
+        """
+        获取配置分布统计
+
+        :param db: orm对象
+        :return: 配置统计列表 [{name: str, value: int}]
+        """
+        stmt = select(SysVehicle.config, func.count()).group_by(SysVehicle.config)
+        result = await db.execute(stmt)
+        rows = result.all()
+        return [{"name": row[0], "value": row[1]} for row in rows]
