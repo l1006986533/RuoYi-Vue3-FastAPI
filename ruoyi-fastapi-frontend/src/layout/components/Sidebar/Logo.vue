@@ -7,13 +7,14 @@
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title">{{ title }}</h1>
+        <h1 class="sidebar-title" v-html="titleHtml"></h1>
       </router-link>
     </transition>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import logo from '@/assets/logo/logo.png'
 import useSettingsStore from '@/store/modules/settings'
 import variables from '@/assets/styles/variables.module.scss'
@@ -26,6 +27,7 @@ defineProps({
 })
 
 const title = import.meta.env.VITE_APP_TITLE;
+const titleHtml = computed(() => title.replace('云端', '<br>云端'));
 const settingsStore = useSettingsStore();
 const sideTheme = computed(() => settingsStore.sideTheme);
 
@@ -86,10 +88,12 @@ const getLogoTextColor = computed(() => {
       margin: 0;
       color: v-bind(getLogoTextColor);
       font-weight: 600;
-      line-height: 50px;
-      font-size: 14px;
+      line-height: 22px;
+      font-size: 12px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
+      max-width: calc(100% - 50px);
+      padding: 3px 0;
     }
   }
 
