@@ -21,8 +21,8 @@ $menuLightText: #303133;
 $menuLightActiveText: #409EFF;
 
 // 基础变量
-$base-sidebar-width: 200px;
-$sideBarWidth: 200px;
+$base-sidebar-width: 280px;
+$sideBarWidth: 280px;
 
 // 菜单暗色变量
 $base-menu-color: #bfcbd9;
@@ -48,6 +48,7 @@ $--color-info: #909399;
   menuLightText: $menuLightText;
   menuLightActiveText: $menuLightActiveText;
   sideBarWidth: $sideBarWidth;
+  baseSidebarWidth: $base-sidebar-width;
   // 导出基础颜色
   blue: $blue;
   lightBlue: $light-blue;
